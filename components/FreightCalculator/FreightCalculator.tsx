@@ -188,10 +188,10 @@ export default function FreightCalculator() {
                                 <button
                                     type="button"
                                     onClick={() => setIsBreakdownOpen(true)}
-                                    className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl border border-orange-200 bg-orange-50/40 px-4 py-3 text-sm font-semibold text-orange-700 transition hover:-translate-y-0.5 hover:border-orange-300 hover:bg-orange-50 focus:outline-none focus:ring-4 focus:ring-orange-100"
+                                    className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl border border-orange-500 bg-orange-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-orange-600 hover:border-orange-600 focus:outline-none focus:ring-4 focus:ring-orange-200"
                                 >
                                     <Info size={18} />
-                                    View calculation breakdown
+                                    View Breakdown
                                 </button>
                             </>
                         ) : (
