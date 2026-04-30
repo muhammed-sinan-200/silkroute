@@ -26,7 +26,7 @@ export default function AppLoader({ loading }: { loading: boolean }) {
                             className="relative h-20 w-20 sm:h-24 sm:w-24"
                         >
                             <Image
-                                src="/logoa.png"
+                                src="/logo.png"
                                 alt="SilkRoute logo"
                                 fill
                                 priority

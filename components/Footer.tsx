@@ -8,10 +8,6 @@ export default function Footer() {
                 </span>
                 . All rights reserved.
             </p>
-
-            <p className="mt-1 text-xs text-slate-400">
-                Crafted by <span className="font-medium text-slate-600">Sinan</span>
-            </p>
         </footer>
     );
 }

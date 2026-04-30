@@ -8,6 +8,7 @@ export default function FreightInputField({
     placeholder,
     icon,
     error,
+    max,
 }: {
     label: string;
     unit: string;
@@ -16,7 +17,15 @@ export default function FreightInputField({
     placeholder: string;
     icon: React.ReactNode;
     error?: string;
+    max?: number;
 }) {
+    const handleChange = (inputValue: string) => {
+        if (!/^\d*\.?\d*$/.test(inputValue)) return;
+
+
+        onChange(inputValue);
+    };
+
     return (
         <div className="min-w-0">
             <div className="mb-2 flex items-center justify-between gap-3">
@@ -32,11 +41,17 @@ export default function FreightInputField({
                 </div>
 
                 <input
-                    type="number"
-                    min="0"
+                    type="text"
+                    inputMode="decimal"
                     value={value}
-                    onChange={(e) => onChange(e.target.value)}
+                    onChange={(e) => handleChange(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (["e", "E", "+", "-"].includes(e.key)) {
+                            e.preventDefault();
+                        }
+                    }}
                     placeholder={placeholder}
+                    aria-invalid={Boolean(error)}
                     className={`block w-full rounded-2xl border bg-white py-3.5 pl-11 pr-4 text-sm text-gray-950 outline-none transition placeholder:text-gray-400 focus:ring-4 ${
                         error
                             ? "border-red-300 focus:border-red-500 focus:ring-red-100"

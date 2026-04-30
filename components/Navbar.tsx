@@ -27,7 +27,6 @@ export default function Navbar() {
           scrolled ? "py-2.5" : "py-3.5"
         }`}
       >
-        {/* Brand */}
         <div className="flex items-center gap-3">
           <div
             className={`relative transition-all duration-300 ${
@@ -35,7 +34,7 @@ export default function Navbar() {
             }`}
           >
             <Image
-              src="/logoa.png"
+              src="/logo.png"
               alt="SilkRoute Freight Calculator logo"
               fill
               className="object-contain"
@@ -66,7 +65,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Route */}
         <div
           className={`hidden items-center gap-2 rounded-full border px-4 text-sm font-medium transition-all duration-300 sm:flex ${
             scrolled
@@ -74,9 +72,9 @@ export default function Navbar() {
               : "border-white/40 bg-white/20 py-2 text-white backdrop-blur-sm"
           }`}
         >
-          <span>China</span>
+          <span>Guangzhou</span>
           <span className="text-orange-300">→</span>
-          <span>UAE</span>
+          <span>Jebel Ali</span>
         </div>
       </div>
     </header>

@@ -7,15 +7,19 @@ export type FreightCalculationResult = {
     totalCost: number;
 };
 
+const CBM_DIVISOR = 500;
+const RATE_PER_CBM = 265;
+const DOCUMENTATION_FEE = 150;
+
 export function calculateFreight(
     grossWeight: number,
     volume: number,
     documentationNeeded: boolean
 ): FreightCalculationResult {
-    const weightCbm = grossWeight / 500;
+    const weightCbm = grossWeight / CBM_DIVISOR;
     const chargeableCbm = Math.max(weightCbm, volume);
-    const freightCost = chargeableCbm * 265;
-    const documentationFee = documentationNeeded ? 150 : 0;
+    const freightCost = chargeableCbm * RATE_PER_CBM;
+    const documentationFee = documentationNeeded ? DOCUMENTATION_FEE : 0;
     const totalCost = freightCost + documentationFee;
 
     return {

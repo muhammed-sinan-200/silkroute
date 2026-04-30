@@ -1,7 +1,18 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
 import { ArrowDown, MapPin } from "lucide-react";
+
+const fadeUp: Variants = {
+    hidden: { opacity: 0, y: 18 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
+    },
+};
 
 export default function Hero() {
     const scrollToCalculator = () => {
@@ -9,8 +20,7 @@ export default function Hero() {
         if (!section) return;
 
         const isMobile = window.innerWidth < 640;
-        const offset = isMobile ? 8 : 55;
-
+        const offset = isMobile ? 8 : 10;
         const y = section.getBoundingClientRect().top + window.scrollY - offset;
 
         window.scrollTo({
@@ -33,30 +43,45 @@ export default function Hero() {
             <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/20 via-black/5 to-black/35" />
 
             <div className="relative z-20 mx-auto w-full max-w-7xl">
-                <div className="mx-auto max-w-4xl text-center">
-                    <div className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/25 bg-white/15 px-4 py-2 text-sm font-medium text-white shadow-sm backdrop-blur-md">
+                <motion.div
+                    className="mx-auto max-w-4xl text-center"
+                    initial="hidden"
+                    animate="visible"
+                    transition={{ staggerChildren: 0.12 }}
+                >
+                    <motion.div
+                        variants={fadeUp}
+                        className="mb-5 inline-flex max-w-full items-center gap-2 rounded-full border border-white/25 bg-white/15 px-4 py-2 text-sm font-medium text-white shadow-sm backdrop-blur-md"
+                    >
                         <MapPin size={16} className="shrink-0 text-orange-300" />
                         <span className="truncate">Guangzhou to Jebel Ali</span>
-                    </div>
+                    </motion.div>
 
-                    <h1 className="text-4xl font-semibold leading-[1.12] tracking-tight text-white sm:text-5xl md:text-6xl">
+                    <motion.h1
+                        variants={fadeUp}
+                        className="text-4xl font-semibold leading-[1.12] tracking-tight text-white sm:text-5xl md:text-6xl"
+                    >
                         Know your freight cost{" "}
                         <span className="text-orange-400">before you ship.</span>
-                    </h1>
+                    </motion.h1>
 
-                    <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg">
+                    <motion.p
+                        variants={fadeUp}
+                        className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg"
+                    >
                         Enter your shipment details and get a clear cost estimate in seconds.
-                    </p>
+                    </motion.p>
 
-                    <button
+                    <motion.button
+                        variants={fadeUp}
                         type="button"
                         onClick={scrollToCalculator}
                         className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-gray-950 shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:bg-orange-500 hover:text-white"
                     >
                         Calculate Now
                         <ArrowDown size={16} />
-                    </button>
-                </div>
+                    </motion.button>
+                </motion.div>
             </div>
         </section>
     );

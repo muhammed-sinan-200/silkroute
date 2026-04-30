@@ -8,6 +8,9 @@ import FreightResultBox from "./FreightResultBox";
 import FreightInfoItem from "./FreightInfoItem";
 import FreightBreakdownModal from "./FreightBreakdownModal";
 
+const MAX_WEIGHT = 100000;
+const MAX_VOLUME = 1000;
+
 export default function FreightCalculator() {
     const [grossWeight, setGrossWeight] = useState("");
     const [volume, setVolume] = useState("");
@@ -16,7 +19,26 @@ export default function FreightCalculator() {
 
     const weightNumber = Number(grossWeight);
     const volumeNumber = Number(volume);
-    const isValid = weightNumber > 0 && volumeNumber > 0;
+
+    const weightError =
+        grossWeight && weightNumber <= 0
+            ? "Enter a valid weight greater than 0."
+            : grossWeight && weightNumber > MAX_WEIGHT
+                ? "Maximum allowed weight is 100,000 kg."
+                : "";
+
+    const volumeError =
+        volume && volumeNumber <= 0
+            ? "Enter a valid volume greater than 0."
+            : volume && volumeNumber > MAX_VOLUME
+                ? "Maximum allowed volume is 1,000 CBM."
+                : "";
+
+    const isValid =
+        weightNumber > 0 &&
+        weightNumber <= MAX_WEIGHT &&
+        volumeNumber > 0 &&
+        volumeNumber <= MAX_VOLUME;
 
     const result = useMemo(() => {
         if (!isValid) return null;
@@ -30,15 +52,18 @@ export default function FreightCalculator() {
             maximumFractionDigits: 2,
         }).format(amount);
 
+    const formatCbm = (value: number) =>
+        value < 0.01 ? value.toFixed(4) : value.toFixed(2);
+
+
     return (
         <section
             id="calculator"
-            className="w-full overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(249,115,22,0.12),transparent_28rem),linear-gradient(180deg,#fffdf8_0%,#fff7ed_45%,#ffffff_100%)] pb-20 pt-16 lg:pt-20"
+            className="w-full overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(249,115,22,0.12),transparent_28rem),linear-gradient(180deg,#fffdf8_0%,#fff7ed_45%,#ffffff_100%)] pb-20 pt-20 lg:pt-24"
         >
             <div className="mx-auto max-w-7xl overflow-hidden px-4 sm:px-6">
                 <div className="mb-8 text-center">
                     <p className="text-sm font-semibold text-orange-600 uppercase">
-
                         Freight Estimator
                     </p>
                     <h3 className="mt-2 text-3xl font-bold tracking-tight text-gray-950 md:text-4xl">
@@ -50,9 +75,7 @@ export default function FreightCalculator() {
                 </div>
 
                 <div className="grid min-w-0 gap-6 lg:grid-cols-[1fr_0.9fr]">
-
                     <div className="min-w-0 rounded-[2rem] border border-gray-200 bg-white p-5 md:p-8">
-
                         <div className="mb-6">
                             <h3 className="text-2xl font-bold tracking-tight text-gray-950">
                                 Shipment Details
@@ -71,11 +94,8 @@ export default function FreightCalculator() {
                                 onChange={setGrossWeight}
                                 placeholder="Example: 2000"
                                 icon={<Package size={18} />}
-                                error={
-                                    grossWeight && weightNumber <= 0
-                                        ? "Enter a valid weight greater than 0."
-                                        : ""
-                                }
+                                max={MAX_WEIGHT}
+                                error={weightError}
                             />
 
                             <FreightInputField
@@ -85,11 +105,8 @@ export default function FreightCalculator() {
                                 onChange={setVolume}
                                 placeholder="Example: 2"
                                 icon={<Ruler size={18} />}
-                                error={
-                                    volume && volumeNumber <= 0
-                                        ? "Enter a valid volume greater than 0."
-                                        : ""
-                                }
+                                max={MAX_VOLUME}
+                                error={volumeError}
                             />
 
                             <div className="rounded-2xl border border-gray-200 bg-white p-4 transition hover:border-orange-200 hover:shadow-sm">
@@ -129,7 +146,6 @@ export default function FreightCalculator() {
                     </div>
 
                     <div className="min-w-0 rounded-[2rem] border border-gray-200 bg-white p-5 md:p-8">
-
                         <div className="flex items-start justify-between gap-4">
                             <div className="min-w-0">
                                 <p className="text-sm font-semibold text-orange-600">
@@ -161,9 +177,9 @@ export default function FreightCalculator() {
                         {result ? (
                             <>
                                 <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                                    <FreightResultBox label="Weight CBM" value={`${result.weightCbm.toFixed(2)} CBM`} />
-                                    <FreightResultBox label="Actual Volume" value={`${result.actualCbm.toFixed(2)} CBM`} />
-                                    <FreightResultBox label="Chargeable CBM" value={`${result.chargeableCbm.toFixed(2)} CBM`} active />
+                                    <FreightResultBox label="Weight CBM" value={`${formatCbm(result.weightCbm)} CBM`} />
+                                    <FreightResultBox label="Actual Volume" value={`${formatCbm(result.actualCbm)} CBM`} />
+                                    <FreightResultBox label="Chargeable CBM" value={`${formatCbm(result.chargeableCbm)} CBM`} active />
                                     <FreightResultBox label="Freight Cost" value={formatCurrency(result.freightCost)} />
                                     <FreightResultBox label="Documentation Fee" value={formatCurrency(result.documentationFee)} />
                                     <FreightResultBox label="Rate" value="$265 / CBM" />
@@ -221,7 +237,6 @@ export default function FreightCalculator() {
                         formatCurrency={formatCurrency}
                     />
                 )}
-
             </div>
         </section>
     );
